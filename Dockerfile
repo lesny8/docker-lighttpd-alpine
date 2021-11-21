@@ -1,4 +1,4 @@
-FROM alpine:3.9
+FROM arm32v7/alpine:3.10
 LABEL maintainer="Marcus Meurs <mail@m4rcu5.nl>" \
       version="1.0.0"
 
