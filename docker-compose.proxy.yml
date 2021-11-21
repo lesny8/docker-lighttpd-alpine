@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  lighttpd:
+    networks: [default, proxy]
+    environment:
+      - VIRTUAL_HOST=${DOMAIN}
+      - LETSENCRYPT_HOST=${DOMAIN}
+      - LETSENCRYPT_EMAIL=${ADMIN_EMAIL}
+
+networks:
+  proxy:
+    external:
+      name: webproxy

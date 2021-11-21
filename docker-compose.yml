@@ -1,0 +1,14 @@
+version: '3.7'
+
+services:
+  lighttpd:
+    build: 
+      context: .
+      network: host
+    container_name: lighttpd
+    restart: unless-stopped
+    env_file:
+      - .env
+    volumes:
+      - ./ssl:/etc/lighttpd/ssl:z
+      - ${VOLUME_DATA}:/var/www/localhost/htdocs
