@@ -25,12 +25,19 @@ elif [ "$1" = "stop" ]; then
   echo -e "${GREEN}Stopping LIGHTTPD container${NC}"
   docker-compose stop && echo -e "${GREEN}LIGHTTPD container has been stopped.${NC}"
 
+elif [ "$1" = "reconf" ]; then
+  echo -e "${GREEN}Reconfiguring LIGHTTPD container${NC}"
+  docker-compose down && echo -e "${GREEN}LIGHTTPD container has been down and removed.${NC}"
+  docker rmi docker-lighttpd-alpine_lighttpd:latest && echo -e "${GREEN}Image has been removed.${NC}"
+  sleep 1
+  "./$(basename "$0")" start
+
+
 elif [ "$1" = "restart" ]; then
   "./$(basename "$0")" stop
   sleep 1
   "./$(basename "$0")" start
 
 else
-  echo -e "${RED}Usage: $0 start|stop|restart${NC}"
+  echo -e "${RED}Usage: $0 start|stop|reconf|restart${NC}"
 fi
-
