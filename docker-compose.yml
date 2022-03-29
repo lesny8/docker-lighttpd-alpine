@@ -10,5 +10,4 @@ services:
     env_file:
       - .env
     volumes:
-      - ./ssl:/etc/lighttpd/ssl:z
       - ${VOLUME_DATA}:/var/www/localhost/htdocs
