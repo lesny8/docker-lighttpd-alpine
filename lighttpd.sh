@@ -16,13 +16,20 @@ fi
 
 source .env >/dev/null 2>&1
 
-if [ "$1" = "start" ]; then
-  echo -e "${GREEN}Starting LIGHTTPD container${NC}" && \
+if [ "$1" = "build" ]; then
+  echo -e "${GREEN}Build LIGHTTPD-base image.${NC}" 
+  docker build base/. -t lighttpd-base:latest && echo -e "${GREEN}Lighttpd-base image was build.${NC}"
+
+elif [ "$1" = "start" ]; then
+  if [ "$(docker image inspect lighttpd-base:latest >/dev/null 2>&1 && echo yes || echo no)" = "no" ]; then
+    "./$(basename "$0")" build
+  fi
+  echo -e "${GREEN}Build image and starting LIGHTTPD container.${NC}" && \
   docker-compose up --build -d && \
   echo -e "${GREEN}LIGHTTPD container has been started.${NC}"
 
 elif [ "$1" = "stop" ]; then
-  echo -e "${GREEN}Stopping LIGHTTPD container${NC}"
+  echo -e "${GREEN}Stopping LIGHTTPD container.${NC}"
   docker-compose stop && echo -e "${GREEN}LIGHTTPD container has been stopped.${NC}"
 
 elif [ "$1" = "reconf" ]; then
@@ -32,12 +39,11 @@ elif [ "$1" = "reconf" ]; then
   sleep 1
   "./$(basename "$0")" start
 
-
 elif [ "$1" = "restart" ]; then
   "./$(basename "$0")" stop
   sleep 1
   "./$(basename "$0")" start
 
 else
-  echo -e "${RED}Usage: $0 start|stop|reconf|restart${NC}"
+  echo -e "${RED}Usage: $0 build|start|stop|reconf|restart${NC}"
 fi
